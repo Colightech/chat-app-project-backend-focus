@@ -1,7 +1,9 @@
+require("dotenv").config()
 const port = process.env.PORT || 8000
 const app = require("./app")
 const connectDB = require("./config/connectDB")
-require("dotenv").config()
+
+
 
 
 app.get('/', (req, res) => {
@@ -21,7 +23,6 @@ const startServer = async () => {
     } catch (error) {
         console.error("Database Connection Error", error)
         process.exit(1) // Exit process on database failure
-        
     }
 }
 

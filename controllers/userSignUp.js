@@ -1,5 +1,5 @@
 const userModel = require("../models/UserModel")
-const bcrypyjs = require("bcryptjs")
+const bcryptjs = require("bcryptjs")
 
 
 const userSignUp = async (req, res) => {
@@ -9,7 +9,7 @@ const userSignUp = async (req, res) => {
         const { name, email, password } = req.body
 
         //Validate Email Format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /@.*\.[a-z]{2,}(?:\.[a-z]{2,})?$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({
                 message : "Invalid Email Format",
@@ -33,17 +33,17 @@ const userSignUp = async (req, res) => {
 
         if (password.length < 8 || !passSpecialRegex.test(password) || !passUpperRegex.test(password) || !passNumberRegex.test(password)) {
             return res.status(400).json({
-                message : "Password must be 8 character long and include at least one uppercase letter and number",
+                message : "Password must be 8 character long and include a special character and at least one uppercase letter and number",
                 error : true,
             })
         }
         
         // Encrypt Password
         const salt = await bcryptjs.genSalt(10)
-        const passEncrypt = await bcrypyjs.hash(password, salt)
+        const passEncrypt = await bcryptjs.hash(password, salt)
 
         // Create The new User Account
-        const user = await new userModel({
+        const user = new userModel({
             name,
             email,
             password : passEncrypt,
@@ -53,8 +53,8 @@ const userSignUp = async (req, res) => {
 
         return res.status(201).json({
             message : "User Register Successfully",
-            data : saveUser,
             success : true,
+            data : saveUser,
         })
 
     } catch (error) {
@@ -64,3 +64,5 @@ const userSignUp = async (req, res) => {
         })
     }
 }
+
+module.exports = userSignUp

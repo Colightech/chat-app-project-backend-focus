@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-const chatRoomSchema = mongoose.Schema({
+const chatRoomSchema = new mongoose.Schema({
     name : {
         type : String,
         required : "Name is Required"
